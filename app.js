@@ -9,8 +9,8 @@ app.use(bodyParser.json())
 
 const router = express.Router()
 
-/**grab songs in a database - apparently Mongoose no longer supports callbacks and requires async and await commands. this is different from the tutorial **/
-router.get("/songs", async function(req, res){
+/**grab songs in a database **/
+router.get("/songs", async(req, res) =>{
     let query = {}
     if(req.query.genre){
         query = {genre : req.query.genre}
@@ -22,6 +22,18 @@ router.get("/songs", async function(req, res){
         res.json(songs)
     } catch (err) {
         res.status(400).send(err)
+    }
+})
+
+router.post("/songs", async(req, res) =>{
+    try {
+        const song = await new Song(req.body)
+        await song.save()
+        res.status(201).json(song)
+        console.log(song)
+    }
+    catch(err){
+    res.status(400).send(err)
     }
 })
 

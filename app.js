@@ -21,7 +21,8 @@ router.get("/songs", async(req, res) =>{
         const songs = await Song.find(query)
         res.json(songs)
     } catch (err) {
-        res.status(400).send(err)
+        console.error(err)
+        res.status(500).json({ error: err.message })
     }
 })
 
